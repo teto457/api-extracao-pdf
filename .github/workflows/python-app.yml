@@ -42,7 +42,10 @@ jobs:
       run: |
         docker build -t api-extracao-pdf .
         docker save api-extracao-pdf -o api-extracao-pdf.tar
-
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     - name: Upload Docker image artifact (mock)
       uses: actions/upload-artifact@v4
       with:
