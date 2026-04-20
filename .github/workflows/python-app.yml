@@ -5,9 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
 
 permissions:
   contents: read
@@ -37,3 +37,14 @@ jobs:
     - name: Test with pytest
       run: |
         pytest tests --maxfail=1 --disable-warnings -v
+
+    - name: Build Docker image (mock)
+      run: |
+        docker build -t api-extracao-pdf .
+        docker save api-extracao-pdf -o api-extracao-pdf.tar
+
+    - name: Upload Docker image artifact (mock)
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-extracao-pdf-image
+        path: api-extracao-pdf.tar
