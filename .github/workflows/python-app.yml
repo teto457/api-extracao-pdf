@@ -38,6 +38,18 @@ jobs:
       run: |
         pytest tests --maxfail=1 --disable-warnings -v
 
+    - name: Notify Discord on PR failure
+      if: ${{ failure() && github.event_name == 'pull_request' }}
+      uses: tsickert/discord-webhook@v7.0.0
+      with:
+        webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        content: |
+          :x: PR check failed.
+          Repository: ${{ github.repository }}
+          PR: #${{ github.event.pull_request.number }}
+          Actor: ${{ github.actor }}
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
     - name: Build Docker image (mock)
       run: |
         docker build -t api-extracao-pdf .
