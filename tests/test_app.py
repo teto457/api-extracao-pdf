@@ -37,6 +37,3 @@ def test_extract_text_invalid_file_type():
     response = tester.post('/extract-text', content_type='multipart/form-data', data=data)
     assert response.status_code == 400
     assert 'error' in response.json
-
-def test_ci_failure_for_discord_notification():
-    assert False, 'Falha intencional para validar alerta do Discord no GitHub Actions.'
